@@ -1,0 +1,11 @@
+Model Information:
+* title:	blackhole skyball
+* source:	https://sketchfab.com/3d-models/blackhole-skyball-a7654f0b750640a68f188d1ba098fb10
+* author:	neutron star (https://sketchfab.com/trydofor)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "blackhole skyball" (https://sketchfab.com/3d-models/blackhole-skyball-a7654f0b750640a68f188d1ba098fb10) by neutron star (https://sketchfab.com/trydofor) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
