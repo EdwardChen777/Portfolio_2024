@@ -23,17 +23,17 @@ const Navbar = () => {
         // Topmost position: show navbar without floating-nav
         setNavBG(true);
         navContainerRef.current.classList.remove("floating-nav");
-        navContainerRef.current.classList.remove("bg-custom-gradient");
+        // navContainerRef.current.classList.remove("bg-custom-gradient");
       } else if (currentScrollY > lastScrollY) {
         // Scrolling down: hide navbar and apply floating-nav
         setNavBG(false);
         navContainerRef.current.classList.add("floating-nav");
-        navContainerRef.current.classList.add("bg-custom-gradient");
+        // navContainerRef.current.classList.add("bg-custom-gradient");
       } else if (currentScrollY < lastScrollY) {
         // Scrolling up: show navbar with floating-nav
         setNavBG(true);
         navContainerRef.current.classList.add("floating-nav");
-        navContainerRef.current.classList.add("bg-custom-gradient");
+        // navContainerRef.current.classList.add("bg-custom-gradient");
       }
 
       setLastScrollY(currentScrollY);
@@ -43,7 +43,7 @@ const Navbar = () => {
       gsap.to(navContainerRef.current, {
         y: navBG ? 0 : -100,
         opacity: navBG ? 1 : 0,
-        duration: 0.2,
+        duration: 0.3,
       });
     }, [navBG]);
 

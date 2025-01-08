@@ -6,7 +6,8 @@ export default {
     extend: {
       colors: {
         "primary": "#072F4D",
-        "secondary": "#E59D23"
+        "secondary": "#E59D23",
+        "background": "#101010",
       },
       fontFamily: {
         futura: ['Futura', 'sans-serif'],

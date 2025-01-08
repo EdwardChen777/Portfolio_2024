@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useLayoutEffect, useState } from 'react';
 import videoBg from '../assets/galaxy-2.mp4'
 import { motion } from 'framer-motion';
 // import { computerCanvas } from './canvas'
@@ -12,6 +12,7 @@ import { ScrollTrigger } from "gsap/all";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// loading the models
 const Model = () => {
   const gltf = useGLTF('./stylized_planet/scene.gltf')
   return <primitive object={gltf.scene} /> ;
@@ -26,39 +27,6 @@ const Starwars = () => {
   const gltf = useGLTF('./starwars.gltf')
   return <primitive object={gltf.scene} /> ;
 }
-
-const StarryBackground = () => {
-  const modelRef = useRef();
-  const mouse = useRef({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (event) => {
-      // Normalize mouse position to range [-0.5, 0.5]
-      mouse.current.x = (event.clientX / window.innerWidth - 0.5) * 2;
-      mouse.current.y = (event.clientY / window.innerHeight - 0.5) * 2;
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
-
-  useFrame(() => {
-    if (modelRef.current) {
-      // Smooth rotation using damping
-      modelRef.current.rotation.y += (mouse.current.x - modelRef.current.rotation.y) * 0.03;
-      modelRef.current.rotation.x += (mouse.current.y - modelRef.current.rotation.x) * 0.03;
-    }
-  });
-
-  return (
-    <mesh ref={modelRef}>
-      <Stars />
-    </mesh>
-  );
-};
 
 const MyMesh = () => {
   const modelRef = useRef(); // Create a reference for the model
@@ -78,115 +46,37 @@ const MyMesh = () => {
   );
 };
 
-// const TransitionScene = () => {
-//   const transitionRef = useRef();
-//   useEffect(() => {
-//     // GSAP Animation
-//     gsap.fromTo(
-//       transitionRef.current.scale,
-//       { x: 0.5, y: 0.5, z: 0.5 }, // Start scale
-//       {
-//         x: 3, y: 3, z: 3, // End scale
-//         duration: 1,       // Duration of zoom
-//         scrollTrigger: {
-//           trigger: '.scroll-container', // The container triggering the scroll animation
-//           start: 'top center',          // When the animation starts
-//           end: 'bottom center',         // When the animation ends
-//           scrub: true,                  // Smooth scrolling effect
-//         },
-//       }
-//     );
+const ModelWithMouseRotation = ({ mouse, transitionRef }) => {
+  const modelRef = useRef();
 
-//     gsap.fromTo(
-//       transitionRef.current.material,
-//       { opacity: 0}, // Start opacity
-//       {
-//         opacity: 1,   // End opacity
-//         duration: 2,
-//         scrollTrigger: {
-//           trigger: '.scroll-container',
-//           start: 'top center',
-//           end: 'bottom center',
-//           scrub: true,
-//         },
-//       }
-//     );
-//   }, []);
-
-//   return (
-//       <mesh ref={transitionRef} scale={[0.5, 0.5, 0.5]} position={[0, 0, 0]}>
-//         <Starwars />
-//       </mesh>
-//   );
-// }
-
-const ScrollTransition = () => {
-  const transitionRef = useRef(null);
-  const firstRef = useRef(null);
-
-  useEffect(() => {
-    if (transitionRef.current) {
-      // GSAP animation for scaling
-      gsap.fromTo(
-        transitionRef.current.scale,
-        { x: 0.5, y: 0.5, z: 0.5 },
-        {
-          x: 5,
-          y: 5,
-          z: 5,
-          duration: 3,
-          scrollTrigger: {
-            trigger: '#video-frame',
-            start: 'center center',
-            end: '+=600 center',
-            scrub: true,
-            markers:true,
-            pin: true,
-            pinSpacing: true
-          },
-        }
-      );
-
-      // GSAP animation for positioning
-    //   gsap.fromTo(
-    //     firstRef.current.position,
-    //     { x: 0, y: 0, z: 0 },
-    //     {
-    //       x: -20,
-    //       y: 0,
-    //       z: 0,
-    //       duration: 0.01,
-    //       scrollTrigger: {
-    //         trigger: '#video-frame',
-    //         start: 'top top',
-    //         end: 'bottom center',
-    //         scrub: true,
-    //       },
-    //     }
-    //   );
+  // Apply mouse-based rotation to the 3D model on each frame
+  useFrame(() => {
+    if (modelRef.current) {
+      // Smooth rotation using damping
+      modelRef.current.rotation.y += (mouse.current.x - modelRef.current.rotation.y) * 0.03;
+      modelRef.current.rotation.x += (mouse.current.y - modelRef.current.rotation.x) * 0.03;
     }
-  }, [transitionRef]); // Dependencies ensure refs are updated
+  });
 
   return (
-    <div className='scroll-container relative w-full h-dvh'>
-      <Canvas>
-        <mesh position={[0,0,0]}>
-          <StarryBackground />
-        </mesh>
-        <mesh ref={transitionRef} scale={[0.5, 0.5, 0.5]} position={[0, 0, -20]}>
-          <Starwars />
-        </mesh>
-      </Canvas>
-    </div>
+    <>
+      <mesh position={[0, 0, 0]} ref={modelRef}>
+        <Stars />
+      </mesh>
+      {/* <mesh ref={transitionRef} scale={[0.5, 0.5, 0.5]}>
+        <Starwars />
+      </mesh> */}
+    </>
   );
 };
 
 const Hero = () => {
   const textRef = useRef(null);
+  const transitionRef = useRef(null);
+  // const modelRef = useRef();
+  const mouse = useRef({ x: 0, y: 0 });
 
-  // animate the title text
   useEffect(() => {
-    // Split text into characters
     const splitText = new SplitType(textRef.current, { types: "chars" });
 
     // GSAP animation for text
@@ -203,62 +93,84 @@ const Hero = () => {
       }
     );
 
-    return () => splitText.revert();
+    gsap.to([".name"], {
+      scale: 0.1,
+      ease: "power2.out" ,
+      scrollTrigger: {
+        trigger: '.scroll-container',
+        start: 'top top',
+        end: 'bottom 60%',
+        scrub: true,
+        // markers: true
+      }
+    });
+
+      if (transitionRef.current) {
+        // GSAP animation for scaling
+        gsap.to(
+          transitionRef.current.scale,
+          { x: 0.5, y: 0.5, z: 0.2 },
+          {
+            x: 5,
+            y: 5,
+            z: 5,
+            // duration: 3,
+            // scrollTrigger: {
+            //   trigger: '.scroll-container',
+            //   start: 'top top',
+            //   end: 'bottom bottom',
+            //   // scrub: true,
+            //   markers:true,
+            //   // pin: true,
+            //   // pinSpacing: true
+            // },
+          }
+        );
+      }
+
+    // handle mouse movement 
+    const handleMouseMove = (event) => {
+      // Normalize mouse position to range [-0.5, 0.5]
+      mouse.current.x = (event.clientX / window.innerWidth - 0.5) * 2;
+      mouse.current.y = (event.clientY / window.innerHeight - 0.5) * 2;
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      splitText.revert();
+    }
+
   }, []);
 
-//   useGSAP(() => {
-//     const clipAnimation = gsap.timeline({
-//       scrollTrigger: {
-//         trigger: "#clip",
-//         start: "center center",
-//         end: "+=800 center",
-//         scrub: true,
-//         pin: true,
-//         pinSpacing: true,
-//         markers: true
-//       },
-//     });
-
-//     clipAnimation.to(".mask-clip-path", {
-//       width: "100vw",
-//       height: "100vh",
-//       borderRadius: 0,
-//       left: 0
-//     });
-// });
-
     return (
-
-      <section className='relative w-full min-h-screen mx-auto bg-gray-900'>
+      <section className='hero relative w-full min-h-screen mx-auto bg-gray-900'>
         <div id='video-frame' className='absolute top-0 left-0 w-full h-full'>
-          <ScrollTransition />
+          <div className='scroll-container relative w-full h-full'>
+            <Canvas>
+              <ModelWithMouseRotation mouse={mouse} transitionRef={transitionRef} />
+              {/* <mesh position={[0,0,0]} ref={modelRef}>
+                <Stars />
+              </mesh> */}
+              <mesh ref={transitionRef} scale={[0.5, 0.5, 0.2]} >
+                <Starwars />
+              </mesh>
+            </Canvas>
+          </div>
+          {/* <TransitionScene /> */}
         </div>
         {/* <div className='absolute w-full h-full scroll-container'> */}
           {/* <video src={videoBg} autoPlay loop muted className='w-full h-full object-cover'/> */}
-          {/* <Canvas>
-            <OrbitControls
-                  enableZoom={false}
-                  maxPolarAngle={Math.PI / 2}
-                  minPolarAngle={Math.PI / 2}
-            />
-            <mesh>
-              <StarryBackground />
-            </mesh>
-            <mesh position={[0, 0, -20]}>
-                <Starwars />
-            </mesh>
-            <TransitionScene />
-          </Canvas> */}
         {/* </div>  */}
         
 
         <div className="w-full h-full">
           <div className='font-futura font-bold text-6xl md:text-[90px] text-center leading-relaxed absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-1' ref={textRef}>
-            <h2 className='text-white'>Edward Chen</h2>
-            {/* <h2 className='text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-orange-500'>Edward Chen</h2> */}
+            <h2 className='name text-white'>Edward Chen</h2>
           </div>
 
-          <div className='absolute top-0 right-0 w-1/3 h-screen z-0 hidden md:block'>
+          <div className='planet absolute top-0 right-0 w-1/3 h-screen z-0 hidden md:block'>
             <Canvas className='h-full'>
               <ambientLight intensity={0.5} />
               <directionalLight position={[5,5,5]} intensity={1} />
@@ -274,26 +186,6 @@ const Hero = () => {
             </Canvas>
           </div>
         </div>
-        {/* <div className="w-full h-full flex items-center justify-center">
-          <div className='flex-1 font-futura font-bold text-[90px] text-white text-right'>
-            <h2>I am</h2>
-            <h2>Edward Chen</h2>
-          </div>
-
-          <div className='flex-1 h-full'>
-            <Canvas className='h-full'>
-              <ambientLight intensity={0.5} />
-              <directionalLight position={[5,5,5]} intensity={1} />
-              <perspectiveCamera position={[0, 0, 20]} />
-              <OrbitControls
-                enableZoom={false}
-                maxPolarAngle={Math.PI / 2}
-                minPolarAngle={Math.PI / 2}
-              />
-              <Model scale={[20,20,20]} />
-            </Canvas>
-          </div>
-        </div> */}
         
       </section>
 

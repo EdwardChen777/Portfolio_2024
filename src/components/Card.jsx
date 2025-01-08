@@ -44,15 +44,15 @@ const Card = ({img, title, description, link}) => {
                 <div className="relative flex size-full flex-col justify-between p-7">
                     <div className="text-white">
                         <div className='flex flex-row justify-between align-center'>
-                            <h1 className="font-futura font-bold text-lg">
+                            <h1 className="font-futura font-bold text-lg 2xl:text-5xl">
                                 {title}
                             </h1>
-                            <span ref={arrowRef} className="flex justify-center items-center">
+                            <span ref={arrowRef} className="flex justify-center items-center text-2xl">
                                 <FaArrowRight />
                             </span>
                         </div>
                         
-                        <p className="mt-3 font-roboto text-sm">
+                        <p className="mt-3 font-roboto text-sm 2xl:text-base">
                             {description}
                         </p>
                     </div>
