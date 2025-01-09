@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useLayoutEffect, useState } from 'react';
 import videoBg from '../assets/galaxy-2.mp4'
 import { motion } from 'framer-motion';
 // import { computerCanvas } from './canvas'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import SplitType from "split-type";
 
@@ -70,6 +70,38 @@ const ModelWithMouseRotation = ({ mouse, transitionRef }) => {
   );
 };
 
+const CameraController = () => {
+  const { camera } = useThree(); // Get the Three.js camera from the canvas
+
+  useEffect(() => {
+    // ScrollTrigger animation to animate camera position based on scroll
+    ScrollTrigger.create({
+      trigger: '.scroll-container', // Use a container element for scroll events
+      start: 'top top', // Start when the scroll container reaches the top of the viewport
+      end: 'bottom 50%', // End when the scroll container reaches the bottom of the viewport
+      scrub: true, // Smooth scrubbing (animation follows scroll)
+      markers: false, // Set to true to debug and see scroll markers
+
+      onUpdate: (self) => {
+        const scrollProgress = self.progress; 
+        console.log(scrollProgress)
+        gsap.to(camera.position, {
+          z: 5 - scrollProgress * 30, // Adjust the range of camera movement
+          ease: 'power2.out',
+          duration: 0.5
+        });
+      }
+    });
+
+    return () => {
+      // Clean up the ScrollTrigger instance when the component unmounts
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [camera]);
+
+  return null; // No visual output; handles camera logic only
+};
+
 const Hero = () => {
   const textRef = useRef(null);
   const transitionRef = useRef(null);
@@ -94,7 +126,8 @@ const Hero = () => {
     );
 
     gsap.to([".name"], {
-      scale: 0.1,
+      scale: 0.5,
+      opacity: 0.5,
       ease: "power2.out" ,
       scrollTrigger: {
         trigger: '.scroll-container',
@@ -105,28 +138,25 @@ const Hero = () => {
       }
     });
 
-      if (transitionRef.current) {
-        // GSAP animation for scaling
-        gsap.to(
-          transitionRef.current.scale,
-          { x: 0.5, y: 0.5, z: 0.2 },
-          {
-            x: 5,
-            y: 5,
-            z: 5,
-            // duration: 3,
-            // scrollTrigger: {
-            //   trigger: '.scroll-container',
-            //   start: 'top top',
-            //   end: 'bottom bottom',
-            //   // scrub: true,
-            //   markers:true,
-            //   // pin: true,
-            //   // pinSpacing: true
-            // },
-          }
-        );
-      }
+      // if (transitionRef.current) {
+      //   // GSAP animation for scaling
+      //   gsap.to(
+      //     transitionRef.current.scale,
+      //     { x: 0.5, y: 0.5, z: 0.2 },
+      //     {
+      //       x: 5,
+      //       y: 5,
+      //       z: 5,
+      //       duration: 3,
+      //       scrollTrigger: {
+      //         trigger: '.scroll-container',
+      //         start: 'top top',
+      //         end: 'bottom bottom',
+      //         markers:true,
+      //       },
+      //     }
+      //   );
+      // }
 
     // handle mouse movement 
     const handleMouseMove = (event) => {
@@ -145,17 +175,15 @@ const Hero = () => {
   }, []);
 
     return (
-      <section className='hero relative w-full min-h-screen mx-auto bg-gray-900'>
+      <section className='hero relative w-full min-h-screen mx-auto bg-bg'>
         <div id='video-frame' className='absolute top-0 left-0 w-full h-full'>
           <div className='scroll-container relative w-full h-full'>
             <Canvas>
+              <CameraController />
               <ModelWithMouseRotation mouse={mouse} transitionRef={transitionRef} />
-              {/* <mesh position={[0,0,0]} ref={modelRef}>
-                <Stars />
-              </mesh> */}
-              <mesh ref={transitionRef} scale={[0.5, 0.5, 0.2]} >
+              {/* <mesh ref={transitionRef} scale={[0.5, 0.5, 0.2]} >
                 <Starwars />
-              </mesh>
+              </mesh> */}
             </Canvas>
           </div>
           {/* <TransitionScene /> */}
@@ -164,9 +192,8 @@ const Hero = () => {
           {/* <video src={videoBg} autoPlay loop muted className='w-full h-full object-cover'/> */}
         {/* </div>  */}
         
-
         <div className="w-full h-full">
-          <div className='font-futura font-bold text-6xl md:text-[90px] text-center leading-relaxed absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-1' ref={textRef}>
+          <div className='font-technor font-semibold text-6xl md:text-[90px] text-center leading-relaxed absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-1' ref={textRef}>
             <h2 className='name text-white'>Edward Chen</h2>
           </div>
 

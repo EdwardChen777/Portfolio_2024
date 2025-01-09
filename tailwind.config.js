@@ -11,7 +11,9 @@ export default {
       },
       fontFamily: {
         futura: ['Futura', 'sans-serif'],
-        roboto: ['"Roboto Serif"', 'serif']
+        roboto: ['"Roboto Serif"', 'serif'],
+        technor: ['Technor', 'sans-serif'],
+        supreme: ['Supreme', 'sans-serif'],
       },
       clipPath: {
         'custom-polygon': 'polygon(0 0, 100% 0, 100% 100%, 0% 100%)',

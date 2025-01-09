@@ -60,7 +60,7 @@ const Navbar = () => {
             >
                 {/* <p>Logo </p> */}
                 <img src={logo} className='w-12 h-12 object-contain'/>
-                <p className='text-white text-[18px] font-medium'>
+                <p className='text-white text-[18px] font-technor font-semibold'>
                   Edward Chen
                 </p>
             </Link>
@@ -78,7 +78,7 @@ const Navbar = () => {
                 </Link> */}
                 <a className={`${
                   active === 'About' ? 'text-white' : 'text-secondary'
-                  } hover:text-white transition duration-200 ease-in-out text-[18px] font-medium cursor-pointer nav-hover-btn` } href="#about" >
+                  } hover:text-white transition duration-200 ease-in-out text-[18px] font-semibold font-technor cursor-pointer nav-hover-btn` } href="#about" >
                   About
                 </a>
               </li>
@@ -94,7 +94,7 @@ const Navbar = () => {
                 </Link> */}
                 <a className= {`${
                   active === 'Projects' ? 'text-white' : 'text-secondary'
-                  } hover:text-white transition duration-200 ease-in-out text-[18px] font-medium cursor-pointer nav-hover-btn`} href="#projects"
+                  } hover:text-white transition duration-200 ease-in-out text-[18px] font-semibold font-technor cursor-pointer nav-hover-btn`} href="#projects"
                 >
                   Projects 
                 </a>

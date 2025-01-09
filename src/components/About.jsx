@@ -85,19 +85,15 @@ const About = () => {
                 animation: gsap.fromTo(".right", {
                     scale: 0.8,                   
                   }, {
-                    scale: 1,                     
-                    // duration: 1,                 
+                    scale: 1,                                     
                   }),
                 // markers: true
             })
 
             const svgElement = document.querySelector('.animated-svg');
             const path = svgElement.querySelector('path');
-
-            // Get the length of the path for strokeDasharray and strokeDashoffset
             const pathLength = path.getTotalLength();
 
-            // Set the strokeDasharray and strokeDashoffset to the path's length initially
             gsap.set(path, {
             strokeDasharray: pathLength,
             strokeDashoffset: pathLength
@@ -122,11 +118,11 @@ const About = () => {
                 .set(allPhotos[index], { autoAlpha: 0 });
         
                 ScrollTrigger.create({
-                trigger: headline,
-                start: "top 80%",
-                end: "top 30%",
-                animation: animation,
-                scrub: true,
+                    trigger: headline,
+                    start: "top 80%",
+                    end: "top 30%",
+                    animation: animation,
+                    scrub: true,
                 // markers: true,
                 });
             });
@@ -140,9 +136,9 @@ const About = () => {
 
       useEffect(() => {
         ScrollTrigger.create({
-          trigger: ".tracker-container", 
-          start: "bottom 50%", 
-          end: "bottom top", 
+          trigger: ".work-header", 
+          start: "top 95%", 
+          end: "top 90%", 
           onEnter: () => controls.start("hovered"), 
           onLeaveBack: () => controls.start("initial"), 
         //   markers: true, 
@@ -151,8 +147,8 @@ const About = () => {
 
     return (
         <div id="about" className="about-container min-h-screen w-screen relative bg-background" ref={about}>
-            <h2 className="font-futura font-bold text-[60px] text-center text-white py-10">ABOUT ME</h2>
-            <div className="tracker-container absolute hidden h-screen w-full md:flex justify-center items-center">
+            <h2 className="font-technor font-semibold text-[60px] text-center text-white py-10">About</h2>
+            <div className="tracker-container absolute hidden h-screen w-full md:flex justify-center items-center ">
                 <div className="w-[2px] bg-white h-screen absolute left-50% py-1"></div>
                 <div className="svg-container py-1">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="204.075 182.839 111.75 129.038" width="111.75px" height="129.038px" className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-1">
@@ -178,7 +174,7 @@ const About = () => {
                     </svg>
                 </div>
                 <motion.div className="relative block overflow-hidden whitespace-nowrap text-base text-secondary uppercase sm:text-lg md:text-3xl scroll-trigger" animate={controls} initial="initial">
-                    <div>
+                    <div className="">
                         {"01".split("").map((l, i) => (
                         <motion.span variants={{initial: { y: 0 }, hovered: { y: "-100%" },}}
                             transition={{duration: DURATION, ease: "easeInOut", delay: STAGGER * i,}}
@@ -207,15 +203,15 @@ const About = () => {
                 <div className="left w-full md:w-1/2">
                     <div className="desktopContent m-auto w-4/5 md:w-[70%] ">
                         <div className="desktopContentSection flex flex-col justify-center md:min-h-[100vh]">
-                            <h1 className="text-secondary font-futura font-bold text-4xl md:text-6xl">Background</h1>
-                            <p className="text-white font-roboto text-sm md:text-base mt-5 md:mt-10 2xl:text-2xl">I grew up in Shenzhen, China. I studied Information Systems and Business Administration with a minor in Computational Finance at Carnegie Mellon University.</p>
+                            <h1 className="text-secondary font-technor font-semibold text-4xl md:text-6xl">Background</h1>
+                            <p className="text-white font-supreme font-normal text-sm md:text-lg mt-5 md:mt-10 2xl:text-2xl">I grew up in Shenzhen, China. I studied Information Systems and Business Administration with a minor in Computational Finance at Carnegie Mellon University.</p>
                         </div>
                         <div className="rounded-[20px] md:hidden bg-white mt-5">
                             <img src={thirdimage} className="object-contain rounded-[20px] p-1 bg-gray-800 border-2 border-gray-500" />
                         </div>
                         <div className="desktopContentSection flex flex-col justify-center md:min-h-[100vh] mt-10 md:mt-0">
-                            <h1 className="text-secondary font-futura font-bold text-4xl md:text-6xl">My work</h1>
-                            <p className="text-white font-roboto text-sm md:text-base mt-5 md:mt-10 2xl:text-2xl">
+                            <h1 className="text-secondary font-technor font-semibold text-4xl md:text-6xl work-header">My work</h1>
+                            <p className="text-white font-supreme font-normal text-sm md:text-lg mt-5 md:mt-10 2xl:text-2xl">
                                 I am interested in building impactful applications. I am also interested in the potential of Artificial Intelligence in finance and biological fields. I have worked closely with many clients in building tech solutions to empower their business.
                             </p>
                         </div>

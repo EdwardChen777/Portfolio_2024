@@ -47,9 +47,9 @@ const CardTilt = ({children, className = ''}) => {
 const Projects = () => {
 
     return (
-        <section id="projects" className="bg-background pb-30 pt-1">
+        <section id="projects" className="bg-background pb-30 pt-1 z-20">
             <div className="container mx-auto px-3">
-                <h2 className="font-futura font-bold text-[60px] text-white text-center py-20">Projects</h2>
+                <h2 className="font-technor font-semibold text-[60px] text-white text-center py-20">Projects</h2>
             </div>
 
             <div className="grid h-[180vh] md:h-[70vh] grid-cols-1 md:grid-cols-4 grid-rows-3 gap-7 mb-7 mx-10 ">
@@ -62,6 +62,7 @@ const Projects = () => {
                         external={true}
                     />
                 </CardTilt>
+                
                 <CardTilt className="row-span-1 md:row-span-3 md:col-span-2 relative border border-white/20 overflow-hidden rounded-md transition-transform duration-300 ease-out">
                     <Card 
                         img={mitochondrial}
@@ -69,6 +70,7 @@ const Projects = () => {
                         description="Bioinformatics study of mitochondrial complex I."
                         link="https://docs.google.com/document/d/1wD9yowqT5roBpmi0bJ6ULTHmplZVZCUZ/edit?usp=sharing&ouid=103616207428669408819&rtpof=true&sd=true"
                         external={true}
+                        className="row-span-1 md:row-span-3 md:col-span-2 relative border border-white/20 overflow-hidden rounded-md transition-transform duration-300 ease-out"
                     />
                 </CardTilt>
                 <CardTilt className="row-span-1 md:row-span-3 relative border border-white/20 overflow-hidden rounded-md transition-transform duration-300 ease-out">
@@ -89,6 +91,7 @@ const Projects = () => {
                         description="Redesigned website to increase class sign up and donation."
                         link="https://www.open-up.org/"
                         external={true}
+                        className="col-span-2 row-span-1 md:row-span-2 md:col-span-1 relative border border-white/20 overflow-hidden rounded-md transition-transform duration-300 ease-out"
                     />
                 </CardTilt>
                 <CardTilt className="col-span-2 row-span-1 md:row-span-2 md:col-span-1 relative border border-white/20 overflow-hidden rounded-md transition-transform duration-300 ease-out">
@@ -100,6 +103,7 @@ const Projects = () => {
                         external={true}
                     />
                 </CardTilt>
+                
             </div>
         </section>
     )
