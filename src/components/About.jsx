@@ -145,7 +145,7 @@ const About = () => {
           end: "bottom top", 
           onEnter: () => controls.start("hovered"), 
           onLeaveBack: () => controls.start("initial"), 
-          markers: true, 
+        //   markers: true, 
         });
       }, [controls]);
 
